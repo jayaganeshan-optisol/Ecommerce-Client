@@ -4,10 +4,17 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { signUpReq } from "../services/userService";
 import { currentUser } from "../utils/tokenParsing";
 import { SignUpInputs } from "../types/types";
+import axios from "axios";
+import message from "../utils/tostify";
+import { ToastContainer } from "react-toastify";
 
 function SignUp() {
-  const passwordPattern = new RegExp("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$");
-  const emailPattern = new RegExp("^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$");
+  const passwordPattern = new RegExp(
+    "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$"
+  );
+  const emailPattern = new RegExp(
+    "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$"
+  );
   const navigate = useNavigate();
 
   const {
@@ -16,19 +23,24 @@ function SignUp() {
     formState: { errors },
   } = useForm<SignUpInputs>();
   const onSubmit: SubmitHandler<SignUpInputs> = async (data) => {
-    const result:any = await signUpReq(data);
-    if (result.data) {
-      navigate("/login");
+    try {
+      await signUpReq(data);
+      navigate("/", { replace: true });
+    } catch (er) {
+      if (axios.isAxiosError(er)) {
+        console.log(er.response?.data.error);
+        message(er.response?.data.error, "error");
+      }
     }
-    console.log(result.data);
   };
   return (
     <div className="wrapper">
+      <ToastContainer />
       <h1 className="title">Ecommerce </h1>
       <div className="form_wrapper">
         <form onSubmit={handleSubmit(onSubmit)} className="form">
           <input
-          type="text"
+            type="text"
             placeholder="username"
             {...register("name", {
               required: true,
@@ -39,7 +51,9 @@ function SignUp() {
           />
           {
             <span className={errors.name ? "error" : "hidden_error"}>
-              {errors.name?.type === "required" ? "Username is Required" : "Username  is too short or long"}
+              {errors.name?.type === "required"
+                ? "Username is Required"
+                : "Username  is too short or long"}
             </span>
           }
           <input
@@ -50,7 +64,9 @@ function SignUp() {
           />
           {
             <span className={errors.email ? "error" : "hidden_error"}>
-              {errors.email?.type === "required" ? "Email is required" : "Email don't match the pattern"}
+              {errors.email?.type === "required"
+                ? "Email is required"
+                : "Email don't match the pattern"}
             </span>
           }
           <input
@@ -74,10 +90,15 @@ function SignUp() {
             <option value="seller">Seller</option>
             <option value="both">Seller & Buyer</option>
           </select>
-          <input type="submit"  value="SignUp" className="input_field form_button" />
+          <input
+            type="submit"
+            value="SignUp"
+            className="input_field form_button"
+          />
         </form>
-        <p className="link">Aleready a user,<a href="/login">Login here</a></p>
-
+        <p className="link">
+          Aleready a user,<a href="/login">Login here</a>
+        </p>
       </div>
     </div>
   );

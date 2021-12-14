@@ -10,7 +10,9 @@ const slice = createSlice({
   reducers: {
     login: (state, action: PayloadAction<any>) => {
       try {
-        state.loggedInStatus = true;
+        if (action.payload) {
+          state.loggedInStatus = true;
+        }
       } catch (er) {
         console.log(er);
       }
@@ -25,10 +27,11 @@ export const signIn = (body: LoginInputs) => {
   return async (dispatch: any) => {
     try {
       const user = await loginReq(body);
+      console.log(user);
       const { name, role, user_id, stripe_id }: ParsedToken = jwtDecode(user);
       localStorage.setItem("user", JSON.stringify({ name, role }));
       dispatch(login({ name, role, user_id, stripe_id }));
-    } catch (er) {
+    } catch (er: any) {
       console.log(er);
     }
   };

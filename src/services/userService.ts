@@ -1,8 +1,13 @@
 import axios from "../axios";
-import { LoginInputs, SignUpInputs } from "../types/types";
+import {
+  IPasswordChange,
+  IUpdateAddress,
+  LoginInputs,
+  SignUpInputs,
+} from "../types/types";
 
 export const signUpReq = async (data: SignUpInputs) => {
-  const result = await axios("http://localhost:3001/register", {
+  const result = axios("http://localhost:3001/register", {
     method: "POST",
     headers: {
       "content-type": "application/json",
@@ -19,6 +24,27 @@ export const loginReq = async (data: LoginInputs) => {
     },
     data: JSON.stringify(data),
   });
-  localStorage.setItem("token", result.data.token);
   return result.data.token;
+};
+
+export const passwordChange = async (data: IPasswordChange) => {
+  const result = await axios("http://localhost:3001/change-password", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+    },
+    data: JSON.stringify(data),
+  });
+  return result.data.message;
+};
+
+export const updateShipping = async (data: IUpdateAddress) => {
+  const result = await axios("http://localhost:3001/update/shipping", {
+    method: "PATCH",
+    headers: {
+      "content-type": "application/json",
+    },
+    data: JSON.stringify(data),
+  });
+  return result.data.message;
 };

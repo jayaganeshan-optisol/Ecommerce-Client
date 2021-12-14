@@ -1,14 +1,21 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import {  useDispatch } from "react-redux";
-import { signIn } from "../redux/slice/userSlice";
+import { useDispatch } from "react-redux";
 import { LoginInputs } from "../types/types";
+import { loginReq } from "../services/userService";
+import { ToastContainer } from "react-toastify";
+import message from "../utils/tostify";
+import axios from "axios";
 
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const passwordPattern = new RegExp("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$");
-  const emailPattern = new RegExp("^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$");
+  const passwordPattern = new RegExp(
+    "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$"
+  );
+  const emailPattern = new RegExp(
+    "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$"
+  );
   const {
     register,
     handleSubmit,
@@ -16,12 +23,21 @@ function Login() {
   } = useForm<LoginInputs>();
 
   const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
-    dispatch(signIn(data));
-    navigate("/home");
+    try {
+      const token = await loginReq(data);
+      localStorage.setItem("token", token);
+      navigate("/", { replace: true });
+    } catch (er) {
+      if (axios.isAxiosError(er)) {
+        console.log(er.response?.data.error);
+        message(er.response?.data.error, "error");
+      }
+    }
   };
 
   return (
     <div className="wrapper">
+      <ToastContainer />
       <h1 className="title">Ecommerce </h1>
       <div className="form_wrapper">
         <form onSubmit={handleSubmit(onSubmit)} className="form">
@@ -32,7 +48,9 @@ function Login() {
           />
           {
             <span className={errors.email ? "error" : "hidden_error"}>
-              {errors.email?.type === "required" ? "Email is required" : "Email don't match the pattern"}
+              {errors.email?.type === "required"
+                ? "Email is required"
+                : "Email don't match the pattern"}
             </span>
           }
           <input
@@ -51,12 +69,18 @@ function Login() {
                 : "Password should have uppercase,lowercase,number and special character"}
             </span>
           }
-          <input type="submit" className="input_field form_button" value="Login" />
+          <input
+            type="submit"
+            className="input_field form_button"
+            value="Login"
+          />
         </form>
-        <p className="link">Don't have accoutn,<a href="/signup">SignUp here</a></p>
-        <p className="link">Forgot your login password,<a href="/fotgot-password">Click here</a></p>
-
-        
+        <p className="link">
+          Don't have accoutn,<a href="/signup">SignUp here</a>
+        </p>
+        <p className="link">
+          Forgot your login password,<a href="/forgot-password">Click here</a>
+        </p>
       </div>
     </div>
   );

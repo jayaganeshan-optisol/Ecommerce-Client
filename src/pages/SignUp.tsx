@@ -2,11 +2,12 @@
 import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { signUpReq } from "../services/userService";
-import { currentUser } from "../utils/tokenParsing";
+import {CircularProgress} from "@mui/material"
 import { SignUpInputs } from "../types/types";
 import axios from "axios";
 import message from "../utils/tostify";
 import { ToastContainer } from "react-toastify";
+import { useState } from "react";
 
 function SignUp() {
   const passwordPattern = new RegExp(
@@ -16,6 +17,7 @@ function SignUp() {
     "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$"
   );
   const navigate = useNavigate();
+  const [loading,setLoading]=useState(false);
 
   const {
     register,
@@ -24,7 +26,9 @@ function SignUp() {
   } = useForm<SignUpInputs>();
   const onSubmit: SubmitHandler<SignUpInputs> = async (data) => {
     try {
+      setLoading(true);
       await signUpReq(data);
+      setLoading(false);
       navigate("/", { replace: true });
     } catch (er) {
       if (axios.isAxiosError(er)) {
@@ -90,11 +94,7 @@ function SignUp() {
             <option value="seller">Seller</option>
             <option value="both">Seller & Buyer</option>
           </select>
-          <input
-            type="submit"
-            value="SignUp"
-            className="input_field form_button"
-          />
+         <button className="input_field form_button">{loading? <CircularProgress size={14} />:"Sign Up"}</button>
         </form>
         <p className="link">
           Aleready a user,<a href="/login">Login here</a>

@@ -1,5 +1,3 @@
-import { HTMLInputTypeAttribute } from "react";
-
 export type SignUpInputs = {
   name: string;
   email: string;
@@ -41,4 +39,19 @@ export interface IProductResult {
 }
 export interface ProductProps {
   info: IProductResult;
+}
+
+export interface ICart {
+  product_id: number;
+  product_name: string;
+  description: string;
+  unit_price: number;
+  quantity: number;
+}
+export interface CartProductProps {
+  product: ICart;
+}
+export interface CartRequest {
+  product_id: number;
+  quantity: number;
 }

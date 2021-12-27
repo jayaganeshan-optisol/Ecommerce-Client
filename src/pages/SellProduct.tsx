@@ -1,6 +1,5 @@
 import axios from "axios";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { ToastContainer } from "react-toastify";
 import Header from "../components/Header";
 import { createProduct } from "../services/productService";
 import { IProductDetails } from "../types/types";
@@ -10,13 +9,21 @@ function SellProduct() {
   const {
     register,
     handleSubmit,
+    resetField,
     formState: { errors },
   } = useForm<IProductDetails>();
 
   const onSubmit: SubmitHandler<IProductDetails> = async (data) => {
     try {
-      const product = await createProduct(data);
-      console.log(product);
+      const result = await createProduct(data);
+      if (result) {
+        resetField("product_name");
+        resetField("description");
+        resetField("unit_price");
+        resetField("number_in_stock");
+
+        message("Product successfully Posted", "success");
+      }
     } catch (er) {
       if (axios.isAxiosError(er)) message(er.response?.data.error, "error");
     }
@@ -24,7 +31,6 @@ function SellProduct() {
 
   return (
     <div>
-      <ToastContainer />
       <Header />
       <div className="content_box">
         <div className="product_details_box">

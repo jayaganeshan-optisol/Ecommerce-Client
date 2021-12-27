@@ -1,7 +1,8 @@
-import { info } from "console";
+import { Sell } from "@mui/icons-material";
 import { Navigate, Outlet } from "react-router-dom";
 import Product from "./components/Product";
 import AccountSettings from "./pages/AccountSettings";
+import Cart from "./pages/Cart";
 import ForgotPassword from "./pages/ForgotPassword";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -21,8 +22,17 @@ const routes = (isLoggedIn: string | null, user: ParsedToken) => [
   {
     path: "sell-product",
     element:
-      isLoggedIn && ["seller", "both"].indexOf(user.role) > 0 ? (
+      isLoggedIn && ["seller", "both"].indexOf(user.role) >= 0 ? (
         <SellProduct />
+      ) : (
+        <Navigate to="/" />
+      ),
+  },
+  {
+    path: "cart",
+    element:
+      isLoggedIn && ["buyer", "both"].indexOf(user.role) >= 0 ? (
+        <Cart  />
       ) : (
         <Navigate to="/" />
       ),

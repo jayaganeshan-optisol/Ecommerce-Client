@@ -2,14 +2,19 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { LoginInputs } from "../types/types";
-import { loginReq } from "../services/userService";
 import { ToastContainer } from "react-toastify";
 import message from "../utils/tostify";
 import axios from "axios";
+import { useState } from "react";
+import { CircularProgress } from "@mui/material";
+import { signIn } from "../redux/slice/userSlice";
+import { TrendingUp } from "@mui/icons-material";
 
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
   const passwordPattern = new RegExp(
     "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$"
   );
@@ -24,8 +29,9 @@ function Login() {
 
   const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
     try {
-      const token = await loginReq(data);
-      localStorage.setItem("token", token);
+      setLoading(true);
+      dispatch(signIn(data));
+      setLoading(false);
       navigate("/", { replace: true });
     } catch (er) {
       if (axios.isAxiosError(er)) {
@@ -69,11 +75,9 @@ function Login() {
                 : "Password should have uppercase,lowercase,number and special character"}
             </span>
           }
-          <input
-            type="submit"
-            className="input_field form_button"
-            value="Login"
-          />
+          <button className="input_field form_button">
+            {loading ? <CircularProgress size={14} /> : "Login"}
+          </button>
         </form>
         <p className="link">
           Don't have accoutn,<a href="/signup">SignUp here</a>

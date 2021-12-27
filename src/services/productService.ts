@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../axios";
 import { IProductDetails } from "../types/types";
 
 export const createProduct = async (data: IProductDetails) => {

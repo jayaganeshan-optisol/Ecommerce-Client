@@ -6,12 +6,26 @@ import { ParsedToken } from "../../utils/tokenParsing";
 import { LoginInputs } from "../../types/types";
 const slice = createSlice({
   name: "test",
-  initialState: { loggedInStatus: false },
+  initialState: {
+    loggedInUser: {
+      name: "",
+      stripe_id: "",
+      user_id: "",
+      role: "",
+    },
+  },
   reducers: {
+    setUser: (state, action: PayloadAction) => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const user: ParsedToken = jwtDecode(token as string);
+        state.loggedInUser = user;
+      }
+    },
     login: (state, action: PayloadAction<any>) => {
       try {
         if (action.payload) {
-          state.loggedInStatus = true;
+          state.loggedInUser = action.payload;
         }
       } catch (er) {
         console.log(er);
@@ -19,7 +33,12 @@ const slice = createSlice({
     },
     logout: (state, action: PayloadAction) => {
       localStorage.clear();
-      state.loggedInStatus = false;
+      state.loggedInUser = {
+        name: "",
+        stripe_id: "",
+        user_id: "",
+        role: "",
+      };
     },
   },
 });
@@ -27,14 +46,13 @@ export const signIn = (body: LoginInputs) => {
   return async (dispatch: any) => {
     try {
       const user = await loginReq(body);
-      console.log(user);
+      localStorage.setItem("token", user);
       const { name, role, user_id, stripe_id }: ParsedToken = jwtDecode(user);
-      localStorage.setItem("user", JSON.stringify({ name, role }));
       dispatch(login({ name, role, user_id, stripe_id }));
     } catch (er: any) {
       console.log(er);
     }
   };
 };
-export const { login, logout } = slice.actions;
+export const { login, logout, setUser } = slice.actions;
 export default slice.reducer;

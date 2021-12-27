@@ -7,7 +7,7 @@ import {
 } from "../types/types";
 
 export const signUpReq = async (data: SignUpInputs) => {
-  const result = axios("http://localhost:3001/register", {
+  const result = await axios("http://localhost:3001/register", {
     method: "POST",
     headers: {
       "content-type": "application/json",

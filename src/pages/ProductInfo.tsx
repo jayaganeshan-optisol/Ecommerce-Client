@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import Header from "../components/Header";
+import { addToCart } from "../redux/slice/cartSlice";
 import { getProduct } from "../services/productService";
 import { IProductResult } from "../types/types";
 
 function ProductInfo() {
   const params = useParams();
   const [product, setProduct] = useState<IProductResult>();
+  const [quantity, setQuantity] = useState(1);
+
+  const dispatch = useDispatch();
   useEffect(() => {
     async function fetch() {
       const result = await getProduct(params.product_id);
@@ -14,7 +19,11 @@ function ProductInfo() {
     }
     fetch();
   }, [params]);
-  console.log(product);
+  const handleCart = () => {
+    if (product?.product_id) {
+      dispatch(addToCart(product.product_id, quantity));
+    }
+  };
   return (
     <div>
       <Header />
@@ -41,13 +50,17 @@ function ProductInfo() {
               type="number"
               placeholder="quantity"
               min="1"
-              max="15"
+              value={quantity}
+              onChange={(e) => setQuantity(Number(e.target.value))}
+              max={product?.number_in_stock}
               className="input_field"
             />
           </section>
         </section>
         <div>
-          <button className="add_to_cart">Add to Cart</button>
+          <button className="add_to_cart" onClick={handleCart}>
+            Add to Cart
+          </button>
           <button className="add_to_cart">Add to wishlist</button>
         </div>
       </section>

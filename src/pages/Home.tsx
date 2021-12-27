@@ -13,7 +13,6 @@ function Home() {
     }
     fetch();
   }, []);
-  console.log(products);
   return (
     <div>
       <Header />

@@ -55,3 +55,16 @@ export interface CartRequest {
   product_id: number;
   quantity: number;
 }
+export interface IWishList {
+  product_id: number;
+  product_name: string;
+  description: string;
+  unit_price: number;
+}
+export interface WishListProductProps {
+  product: IWishList;
+}
+
+export interface WishListRequest {
+  product_id: number;
+}

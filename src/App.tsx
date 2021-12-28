@@ -7,17 +7,18 @@ import { RootState } from "./redux/store";
 
 import routes from "./routes";
 import { ParsedToken } from "./utils/tokenParsing";
+import jwtDecode from "jwt-decode";
 
 function App() {
   const dispatch = useDispatch();
+  const token = localStorage.getItem("token");
+  const user: ParsedToken = jwtDecode(token as string);
+
   useEffect(() => {
     dispatch(setUser());
   }, [dispatch]);
 
-  const user: ParsedToken = useSelector(
-    (state: RootState) => state.user.loggedInUser
-  );
-  const routing = useRoutes(routes(user.user_id, user));
+  const routing = useRoutes(routes(token, user.role));
   return <>{routing}</>;
 }
 

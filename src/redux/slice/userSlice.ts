@@ -10,7 +10,7 @@ const slice = createSlice({
     loggedInUser: {
       name: "",
       stripe_id: "",
-      user_id: "",
+      user_id: 0,
       role: "",
     },
   },
@@ -36,7 +36,7 @@ const slice = createSlice({
       state.loggedInUser = {
         name: "",
         stripe_id: "",
-        user_id: "",
+        user_id: 0,
         role: "",
       };
     },

@@ -10,11 +10,9 @@ import NotFound from "./pages/Not-Found";
 import ProductInfo from "./pages/ProductInfo";
 import SellProduct from "./pages/SellProduct";
 import SignUp from "./pages/SignUp";
-import { ParsedToken } from "./utils/tokenParsing";
+import WishList from "./pages/WishList";
 
-const routes = (isLoggedIn: string | null, user: ParsedToken) => [
-  { path: "signup", element: !isLoggedIn ? <SignUp /> : <Navigate to="/" /> },
-  { path: "login", element: !isLoggedIn ? <Login /> : <Navigate to="/" /> },
+const routes = (isLoggedIn: string | null, role: string) => [
   {
     path: "forgot-password",
     element: !isLoggedIn ? <ForgotPassword /> : <Navigate to="/" />,
@@ -22,7 +20,7 @@ const routes = (isLoggedIn: string | null, user: ParsedToken) => [
   {
     path: "sell-product",
     element:
-      isLoggedIn && ["seller", "both"].indexOf(user.role) >= 0 ? (
+      isLoggedIn && ["seller", "both"].indexOf(role) >= 0 ? (
         <SellProduct />
       ) : (
         <Navigate to="/" />
@@ -31,8 +29,17 @@ const routes = (isLoggedIn: string | null, user: ParsedToken) => [
   {
     path: "cart",
     element:
-      isLoggedIn && ["buyer", "both"].indexOf(user.role) >= 0 ? (
-        <Cart  />
+      isLoggedIn && ["buyer", "both"].indexOf(role) >= 0 ? (
+        <Cart />
+      ) : (
+        <Navigate to="/" />
+      ),
+  },
+  {
+    path: "wish-list",
+    element:
+      isLoggedIn && ["buyer", "both"].indexOf(role) >= 0 ? (
+        <WishList />
       ) : (
         <Navigate to="/" />
       ),
@@ -62,6 +69,8 @@ const routes = (isLoggedIn: string | null, user: ParsedToken) => [
       },
     ],
   },
+  { path: "signup", element: !isLoggedIn ? <SignUp /> : <Navigate to="/" /> },
+  { path: "login", element: !isLoggedIn ? <Login /> : <Navigate to="/" /> },
   {
     path: "*",
     element: <NotFound />,

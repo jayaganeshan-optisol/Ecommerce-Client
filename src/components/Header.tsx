@@ -7,6 +7,7 @@ import { RootState } from "../redux/store";
 import { useEffect } from "react";
 import { getCart } from "../redux/slice/cartSlice";
 import { ToastContainer } from "react-toastify";
+import { getWishList } from "../redux/slice/wishlistSlice";
 function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ function Header() {
 
   useEffect(() => {
     dispatch(getCart());
+    dispatch(getWishList());
   }, [dispatch]);
 
   const handleClick = () => {

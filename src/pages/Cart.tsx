@@ -24,7 +24,7 @@ const Cart = () => {
           ))}
         </div>
       ) : (
-        <h1>Cart is Empty</h1>
+        <h1 style={{ textAlign: "center" }}>Cart is Empty</h1>
       )}
     </div>
   );

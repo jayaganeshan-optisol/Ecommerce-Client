@@ -8,7 +8,6 @@ import axios from "axios";
 import { useState } from "react";
 import { CircularProgress } from "@mui/material";
 import { signIn } from "../redux/slice/userSlice";
-import { TrendingUp } from "@mui/icons-material";
 
 function Login() {
   const dispatch = useDispatch();

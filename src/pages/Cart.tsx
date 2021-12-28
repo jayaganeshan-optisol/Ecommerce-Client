@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CartCard from "../components/CartCard";
 import Header from "../components/Header";
 import { removeAllCart } from "../redux/slice/cartSlice";
+import { placeOrderByCart } from "../redux/slice/orderSlice";
 import { RootState } from "../redux/store";
 import { ICart } from "../types/types";
 
@@ -13,7 +14,7 @@ const Cart = () => {
   };
   //Placing order from cart
   const handlePlaceOrder = () => {
-    console.log("working");
+    dispatch(placeOrderByCart());
   };
   return (
     <div>

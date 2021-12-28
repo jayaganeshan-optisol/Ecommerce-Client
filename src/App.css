@@ -178,7 +178,7 @@ a {
   width: 400px;
 }
 .product_desc {
-  color: rgb(80, 80, 80);
+  color: gray;
 }
 .product_button {
   display: flex;
@@ -303,6 +303,8 @@ a {
 }
 .wishlist_card_body {
   display: flex;
+  justify-self: center;
+  align-items: center;
   padding: 20px 30px;
 }
 .wishlist_card_body > * {

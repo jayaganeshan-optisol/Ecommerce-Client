@@ -1,15 +1,22 @@
 import axios from "axios";
 import { FC } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { removeCart, updateCart } from "../redux/slice/cartSlice";
-import { CartProductProps } from "../types/types";
+import { RootState } from "../redux/store";
+import { CartProductProps, IProductResult } from "../types/types";
 import message from "../utils/tostify";
 
 const CartCard: FC<CartProductProps> = ({ product }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const tempProduct = useSelector((state: RootState) => state.product.products);
+  const prod: IProductResult[] = tempProduct.filter(
+    (temp: IProductResult) => temp.product_id === product.product_id
+  );
+  console.log(prod[0].number_in_stock);
   const {
     register,
     handleSubmit,
@@ -48,13 +55,18 @@ const CartCard: FC<CartProductProps> = ({ product }) => {
             placeholder="quantity"
             type="number"
             min="1"
-            {...register("quantity", { required: true, min: 1 })}
+            {...register("quantity", {
+              required: true,
+              min: 1,
+              max: prod[0].number_in_stock,
+            })}
             className="input_field quantity"
             defaultValue={product.quantity}
           />
           {
             <span className={errors.quantity ? "error" : "hidden_error"}>
-              {errors.quantity && "Minimum 1"}
+              {errors.quantity?.type === "min" && "Minimum 1"}
+              {errors.quantity?.type === "max" && "Exceeds the stock"}
             </span>
           }
           <h4>Unit Price:&#8377; {product.unit_price}</h4>

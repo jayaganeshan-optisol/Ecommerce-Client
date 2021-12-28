@@ -31,7 +31,7 @@ function ProductInfo() {
         <section className="product_info_box_content">
           <section className="right_product_info">
             <h2>{product?.product_name}</h2>
-            <h2>{product?.description}</h2>
+            <h2 className="product_desc">{product?.description}</h2>
           </section>
           <section className="left_product_info">
             <h3>
@@ -58,8 +58,12 @@ function ProductInfo() {
           </section>
         </section>
         <div>
-          <button className="add_to_cart" onClick={handleCart}>
-            Add to Cart
+          <button
+            className="add_to_cart"
+            onClick={handleCart}
+            disabled={product?.number_in_stock === 0}
+          >
+            {product?.number_in_stock === 0 ? "Out Of Stock" : "Add to Cart"}
           </button>
           <button className="add_to_cart">Add to wishlist</button>
         </div>

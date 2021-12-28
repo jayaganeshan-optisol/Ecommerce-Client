@@ -1,18 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Header from "../components/Header";
 import Product from "../components/Product";
-import { getProducts } from "../services/productService";
+import { getProducts } from "../redux/slice/productSlice";
+import { RootState } from "../redux/store";
 import { IProductResult } from "../types/types";
 
 function Home() {
-  const [products, setProducts] = useState<IProductResult[]>([]);
+  const dispatch = useDispatch();
   useEffect(() => {
-    async function fetch() {
-      let products = await getProducts();
-      setProducts(products);
-    }
-    fetch();
-  }, []);
+    dispatch(getProducts());
+  }, [dispatch]);
+  const products: IProductResult[] = useSelector(
+    (state: RootState) => state.product.products
+  );
   return (
     <div>
       <Header />

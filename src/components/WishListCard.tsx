@@ -18,15 +18,20 @@ const WishListCard: FC<WishListProductProps> = ({ product }) => {
             <h1 onClick={() => navigate("/product/" + product.product_id)}>
               {product.product_name}
             </h1>
-            <h3>{product.description}</h3>
+            <h3 className="product_desc">{product.description}</h3>
           </div>
-          <h4>price: &#8377;{product.unit_price}</h4>
-          <button
-            className="input_field form_button red"
-            onClick={() => handleRemoveCart(product.product_id)}
-          >
-            Remove from WishList
-          </button>
+          <h4>
+            price:{" "}
+            <span className="highlight">&#8377;{product.unit_price}</span>
+          </h4>
+          <div>
+            <button
+              className="input_field remove_product red"
+              onClick={() => handleRemoveCart(product.product_id)}
+            >
+              Remove from WishList
+            </button>
+          </div>
         </div>
       </div>
     </div>

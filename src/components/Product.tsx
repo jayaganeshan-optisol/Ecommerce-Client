@@ -55,9 +55,9 @@ const Product: FC<ProductProps> = ({ info }) => {
         <button
           className="add_to_cart"
           onClick={() => handleAddCart(info.product_id)}
-          disabled={disabled}
+          disabled={info.number_in_stock === 0 || disabled}
         >
-          Add to Cart
+          {info.number_in_stock === 0 ? "Out Of Stock" : "Add to Cart"}
         </button>
         <button
           className="add_to_cart"

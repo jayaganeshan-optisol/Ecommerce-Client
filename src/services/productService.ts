@@ -12,7 +12,7 @@ export const createProduct = async (data: IProductDetails) => {
   return result.data;
 };
 
-export const getProducts = async () => {
+export const fetchProducts = async () => {
   const result = await axios("http://localhost:3001/product/all", {
     method: "GET",
     headers: {

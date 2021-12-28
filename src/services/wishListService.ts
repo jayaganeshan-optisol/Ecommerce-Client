@@ -1,5 +1,5 @@
 import axios from "../axios";
-import { IWishList, WishListRequest } from "../types/types";
+import { IWishList } from "../types/types";
 
 export const fetchWishList = async (): Promise<IWishList[]> => {
   const result = await axios("http://localhost:3001/wishlist", {

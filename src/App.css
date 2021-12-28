@@ -1,8 +1,11 @@
 * {
   padding: 0px;
   margin: 0px;
+  box-sizing: border-box;
 }
-
+button {
+  cursor: pointer;
+}
 .App {
   text-align: center;
 }
@@ -251,10 +254,13 @@ a {
   width: 70vw;
   margin: auto;
 }
-.cart_wrapper > button {
+.cart_buttons {
+  display: flex;
   margin-top: 30px;
-  margin-left: 80%;
-  background-color: red;
+  margin-left: 70%;
+  gap: 40px;
+}
+.cart_wrapper > button {
 }
 .cart_body_center {
   display: flex;
@@ -282,9 +288,7 @@ a {
   background: red;
   outline: 10px;
 }
-.cart_buttons > *:hover {
-  outline: none;
-}
+
 .quantity {
   width: 70px;
 }
@@ -315,11 +319,26 @@ a {
 .account_buttons > * {
   flex: 1;
   background: none;
-  border: 2px solid gray;
+  border: 2px solid lightgray;
   border-radius: 5px;
   padding: 10px 0px;
 }
 .wishlist_wrapper > button {
   margin-left: 90%;
   background: red;
+}
+.red {
+  background-color: red;
+  border: none;
+}
+.cart_quantity {
+  width: 120px;
+  background: #ffd814;
+  outline: none;
+  border: none;
+}
+.icon_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

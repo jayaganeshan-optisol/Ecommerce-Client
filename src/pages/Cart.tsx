@@ -11,14 +11,27 @@ const Cart = () => {
   const handleClearAll = () => {
     dispatch(removeAllCart());
   };
+  //Placing order from cart
+  const handlePlaceOrder = () => {
+    console.log("working");
+  };
   return (
     <div>
       <Header />
       {cartProducts.length > 0 ? (
         <div className="cart_wrapper">
-          <button className="input_field form_button" onClick={handleClearAll}>
-            Clear all
-          </button>
+          <div className="cart_buttons">
+            <button
+              className="input_field cart_quantity"
+              onClick={handlePlaceOrder}
+            >
+              Place Order
+            </button>
+            <button className="input_field  red" onClick={handleClearAll}>
+              Clear all
+            </button>
+          </div>
+
           {cartProducts.map((product: ICart) => (
             <CartCard key={product.product_id} product={product} />
           ))}

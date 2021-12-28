@@ -2,12 +2,14 @@ import axios from "axios";
 import { FC } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { removeCart, updateCart } from "../redux/slice/cartSlice";
 import { CartProductProps } from "../types/types";
 import message from "../utils/tostify";
 
 const CartCard: FC<CartProductProps> = ({ product }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -37,7 +39,9 @@ const CartCard: FC<CartProductProps> = ({ product }) => {
   return (
     <div className="cart_card_wrapper">
       <div className="cart_card">
-        <h2>{product.product_name}</h2>
+        <h2 onClick={() => navigate("/product/" + product.product_id)}>
+          {product.product_name}
+        </h2>
         <div className="cart_body_center">
           Quantity:
           <input

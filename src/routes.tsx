@@ -1,6 +1,4 @@
-import { Sell } from "@mui/icons-material";
 import { Navigate, Outlet } from "react-router-dom";
-import Product from "./components/Product";
 import AccountSettings from "./pages/AccountSettings";
 import Cart from "./pages/Cart";
 import ForgotPassword from "./pages/ForgotPassword";

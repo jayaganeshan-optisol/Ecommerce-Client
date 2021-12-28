@@ -4,6 +4,8 @@ import ChangePassword from "../components/ChangePassword";
 import Header from "../components/Header";
 import UpdateAddress from "../components/UpdateAddress";
 import { RootState } from "../redux/store";
+import ViewListIcon from "@mui/icons-material/ViewList";
+import LocalShippingSharpIcon from "@mui/icons-material/LocalShippingSharp";
 
 function AccountSettings() {
   const { role } = useSelector((state: RootState) => state.user.loggedInUser);
@@ -18,8 +20,16 @@ function AccountSettings() {
               ""
             ) : (
               <div className="account_buttons">
-                <button onClick={() => navigate("/wish-list")}>List</button>
-                <button>Orders</button>{" "}
+                <button onClick={() => navigate("/wish-list")}>
+                  <div className="icon_wrapper">
+                    <ViewListIcon /> List
+                  </div>
+                </button>
+                <button>
+                  <div className="icon_wrapper">
+                    <LocalShippingSharpIcon /> Orders
+                  </div>
+                </button>{" "}
               </div>
             )}
 

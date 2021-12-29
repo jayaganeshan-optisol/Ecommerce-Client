@@ -26,13 +26,15 @@ function AccountSettings() {
                   </div>
                 </button>
                 <button>
-                  <div className="icon_wrapper">
+                  <div
+                    className="icon_wrapper"
+                    onClick={() => navigate("/orders")}
+                  >
                     <LocalShippingSharpIcon /> Orders
                   </div>
                 </button>{" "}
               </div>
             )}
-
             <UpdateAddress />
             <ChangePassword />
           </div>

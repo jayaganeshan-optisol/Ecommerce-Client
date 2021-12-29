@@ -68,3 +68,12 @@ export interface WishListProductProps {
 export interface WishListRequest {
   product_id: number;
 }
+export interface Order {
+  order_id: number;
+  date: string;
+  total_price: number;
+  payment_status: boolean;
+}
+export interface OrdersProps {
+  order: Order;
+}

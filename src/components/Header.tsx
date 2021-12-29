@@ -27,7 +27,7 @@ function Header() {
   };
   return (
     <div className="header">
-      <ToastContainer />
+      <ToastContainer position="bottom-right" />
       <div className="headerWrapper">
         <h1 className="logo" onClick={() => navigate("/")}>
           Ecommerce

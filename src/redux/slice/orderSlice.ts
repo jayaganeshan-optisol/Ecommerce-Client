@@ -10,13 +10,12 @@ const slice = createSlice({
   initialState: { userOrders: [] },
   reducers: {
     setOrder: (state, action: PayloadAction<any>) => {
-      console.log(action.payload);
       state.userOrders = action.payload;
     },
   },
 });
 
-export const getCart = () => {
+export const getOrders = () => {
   return async (dispatch: any) => {
     try {
       const user = await fetchOrder();
@@ -30,9 +29,10 @@ export const getCart = () => {
 export const placeOrderByCart = () => {
   return async (dispatch: any) => {
     try {
-      await orderByCart();
-      dispatch(getCart());
+      const result = await orderByCart();
+      dispatch(getOrders());
       dispatch(removeAllCart());
+      message(result.message, "success");
     } catch (er: any) {
       if (axios.isAxiosError(er)) {
         message(er.response?.data.error, "error");

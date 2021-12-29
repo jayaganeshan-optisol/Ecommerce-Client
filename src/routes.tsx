@@ -5,6 +5,8 @@ import ForgotPassword from "./pages/ForgotPassword";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NotFound from "./pages/Not-Found";
+import OrderDetails from "./pages/OrderDetails";
+import Orders from "./pages/Orders";
 import ProductInfo from "./pages/ProductInfo";
 import SellProduct from "./pages/SellProduct";
 import SignUp from "./pages/SignUp";
@@ -41,6 +43,19 @@ const routes = (isLoggedIn: string | null, role: string) => [
       ) : (
         <Navigate to="/" />
       ),
+  },
+  {
+    path: "orders",
+    element:
+      isLoggedIn && ["buyer", "both"].indexOf(role) >= 0 ? (
+        <Outlet />
+      ) : (
+        <Navigate to="/" />
+      ),
+    children: [
+      { index: true, element: <Orders /> },
+      { path: ":orderId", element: <OrderDetails /> },
+    ],
   },
   {
     path: "account-settings",
